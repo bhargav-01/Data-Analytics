@@ -2,6 +2,8 @@ import * as Yup from 'yup';
 import { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
+const axios=require('axios');
+
 // material
 import {
   Link,
@@ -35,7 +37,17 @@ export default function LoginForm() {
     },
     validationSchema: LoginSchema,
     onSubmit: () => {
-      navigate('/dashboard', { replace: true });
+      axios.post('http://localhost:3001/users/login',{
+        email:email,
+        password:password,
+      })
+      .then(response=>{
+          localStorage.setItem('token',response.data.token);
+          navigate('/dashboard', { replace: true });
+      })
+      .catch(error => {
+          alert(error);
+      });
     }
   });
 

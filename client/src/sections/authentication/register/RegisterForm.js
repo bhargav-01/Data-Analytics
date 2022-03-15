@@ -33,7 +33,20 @@ export default function RegisterForm() {
     },
     validationSchema: RegisterSchema,
     onSubmit: () => {
-      navigate('/dashboard', { replace: true });
+        axios.post('http://localhost:3001/users/signup',{
+            email:email,
+            firstName:firstName,
+            lastName:lastName,
+            password:password,
+        })
+        .then(response=>{
+            localStorage.setItem('token',response.data.token);
+            navigate('/dashboard', { replace: true });
+        })
+        .catch(error => {
+            alert(error);
+            console.log(error);
+        });
     }
   });
 
