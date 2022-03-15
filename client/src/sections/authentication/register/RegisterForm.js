@@ -1,4 +1,4 @@
-import {axios} from 'axios'
+import axios from 'axios'
 import * as Yup from 'yup';
 import { useState } from 'react';
 import { useFormik, Form, FormikProvider } from 'formik';
@@ -35,10 +35,17 @@ export default function RegisterForm() {
     },
     validationSchema: RegisterSchema,
     onSubmit: () => {
+        console.log(formik)
+        console.log(RegisterSchema)
+        const values=formik.values
         axios.post('http://localhost:3001/users/signup',{
-          RegisterSchema
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          password: values.password,
         })
         .then(response=>{
+          alert("ss")
             localStorage.setItem('token',response.data.token);
             navigate('/dashboard', { replace: true });
         })

@@ -35,18 +35,19 @@ export default function LoginForm() {
       password: '',
       remember: true
     },
-    validationSchema: LoginSchema,
+    // validationSchema: LoginSchema,
     onSubmit: () => {
-      axios.post('http://localhost:3001/users/login',{
-        LoginSchema
-      })
-      .then(response=>{
-          localStorage.setItem('token',response.data.token);
-          navigate('/dashboard', { replace: true });
-      })
-      .catch(error => {
-          alert(error);
-      });
+      alert("Submit")
+      // axios.post('http://localhost:3001/users/login',{
+      //   LoginSchema
+      // })
+      // .then(response=>{
+      //     localStorage.setItem('token',response.data.token);
+      //     navigate('/dashboard', { replace: true });
+      // })
+      // .catch(error => {
+      //     alert(error);
+      // });
     }
   });
 
