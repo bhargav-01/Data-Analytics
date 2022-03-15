@@ -35,14 +35,12 @@ export default function RegisterForm() {
     },
     validationSchema: RegisterSchema,
     onSubmit: () => {
-        console.log(formik)
-        console.log(RegisterSchema)
         const values=formik.values
         axios.post('http://localhost:3001/users/signup',{
-          firstName: values.firstName,
-          lastName: values.lastName,
-          email: values.email,
-          password: values.password,
+          firstName: formik.values.firstName,
+          lastName: formik.values.lastName,
+          email: formik.values.email,
+          password: formik.values.password,
         })
         .then(response=>{
           alert("ss")

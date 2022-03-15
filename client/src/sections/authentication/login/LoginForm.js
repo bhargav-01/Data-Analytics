@@ -38,16 +38,17 @@ export default function LoginForm() {
     // validationSchema: LoginSchema,
     onSubmit: () => {
       alert("Submit")
-      // axios.post('http://localhost:3001/users/login',{
-      //   LoginSchema
-      // })
-      // .then(response=>{
-      //     localStorage.setItem('token',response.data.token);
-      //     navigate('/dashboard', { replace: true });
-      // })
-      // .catch(error => {
-      //     alert(error);
-      // });
+      axios.post('http://localhost:3001/users/login',{
+        email: formik.values.email,
+        password: formik.values.password,
+      })
+      .then(response=>{
+          localStorage.setItem('token',response.data.token);
+          navigate('/dashboard', { replace: true });
+      })
+      .catch(error => {
+          alert(error);
+      });
     }
   });
 
