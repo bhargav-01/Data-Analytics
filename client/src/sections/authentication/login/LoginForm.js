@@ -2,7 +2,7 @@ import * as Yup from 'yup';
 import { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
-const axios=require('axios');
+import axios from 'axios'
 
 // material
 import {
@@ -38,8 +38,7 @@ export default function LoginForm() {
     validationSchema: LoginSchema,
     onSubmit: () => {
       axios.post('http://localhost:3001/users/login',{
-        email:email,
-        password:password,
+        LoginSchema
       })
       .then(response=>{
           localStorage.setItem('token',response.data.token);
