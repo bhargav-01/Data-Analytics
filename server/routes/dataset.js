@@ -12,11 +12,11 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
-router.post((req, res, next) => {
+router.post('/',authenticate.verifyUser, (req, res, next) => {
   
     req.body.author = req.user._id;
     console.log(req.body);
-    Post.create(req.body)
+    DataSet.create(req.body)
     .then((dataset) => {
         DataSet.findById(dataset._id)
         

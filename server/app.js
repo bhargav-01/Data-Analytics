@@ -12,6 +12,7 @@ var FileStore = require('session-file-store')(session);
 var cors =require('cors')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var dataRouter= require('./routes/dataset');
 const DB_USER = 'DataAnalytics';
 const PASSWORD = encodeURIComponent('r0XziYtbisxPPp66'); 
 const uri =  config.mongoUrl;
@@ -50,6 +51,8 @@ app.use(passport.session());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/dataset', dataRouter);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

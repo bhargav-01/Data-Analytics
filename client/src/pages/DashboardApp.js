@@ -14,9 +14,9 @@ import {
   AppWebsiteVisits,
   AppTrafficBySite,
   AppCurrentSubject,
-  AppConversionRates
+  AppConversionRates,
 } from '../sections/@dashboard/app';
-
+import AppUploadData from '../sections/@dashboard/app/AppUploadData';
 // ----------------------------------------------------------------------
 
 export default function DashboardApp() {
@@ -27,6 +27,9 @@ export default function DashboardApp() {
           <Typography variant="h4">Hi, Welcome back</Typography>
         </Box>
         <Grid container spacing={3}>
+          <Grid item xs={12} sm={6} md={3}>
+            <AppUploadData />
+          </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <AppWeeklySales />
           </Grid>
