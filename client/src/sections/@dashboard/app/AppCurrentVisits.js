@@ -1,3 +1,4 @@
+import {useEffect} from 'react'
 import { merge } from 'lodash';
 import ReactApexChart from 'react-apexcharts';
 // material
@@ -7,6 +8,12 @@ import { Card, CardHeader } from '@mui/material';
 import { fNumber } from '../../../utils/formatNumber';
 //
 import { BaseOptionChart } from '../../../components/charts';
+import { AnimatePresence } from 'framer-motion';
+import axios from 'axios';
+
+// db
+import Dexie from 'dexie';
+import { daysToWeeks } from 'date-fns';
 
 // ----------------------------------------------------------------------
 
@@ -34,8 +41,17 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
 const CHART_DATA = [4344, 5435, 1443, 4443];
 
 export default function AppCurrentVisits() {
-  const theme = useTheme();
 
+  const db = new Dexie('myDatabase');
+  db.version(1).stores({
+    friends: "++id,s_no, gre, tofel, ur, sop, lor, cgpa, research",
+  });
+  const token = localStorage.getItem("token")
+  const theme = useTheme();
+  const API = axios.create({
+    baseURL: 'http://localhost:3001/dataset/',
+    headers: {'Authorization': `Bearer ${token}`}
+  });
   const chartOptions = merge(BaseOptionChart(), {
     colors: [
       theme.palette.primary.main,
@@ -60,6 +76,34 @@ export default function AppCurrentVisits() {
       pie: { donut: { labels: { show: false } } }
     }
   });
+
+  useEffect(() => {
+      API.get('/')
+      .then(response=>{
+
+        // for(var data1 of response.data)
+        // {
+        //   // friends: "++id,s_no, gre, tofel, ur, sop, lor, cgpa, research",
+
+        //    db.friends.add({s_no:data1[0],gre:data1[1],tofel:data1[2],ur:data1[3],sop:data1[4],lor:data1[5],cgpa:data1[6],reseach:data1[7]});
+        // }
+
+          var result=new Map();
+          console.log(db.friends.toArray())
+          db.friends.orderBy('gre').eachKey(date => {
+            if(date!="GRE Score")
+            {
+              console.log(result.get("fuck"))
+              result.set("fuck",1)
+            }
+            
+          })
+          console.log(result.get("fuck"))
+          console.log(result)
+          // setPosts(response.data);
+      });
+  },[])
+
 
   return (
     <Card>
