@@ -39,6 +39,23 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 // const CHART_DATA = [4344, 5435, 1443, 4443];
+const CHART_DATA = [
+  {
+    name: 'Team A',
+    type: 'column',
+    data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30]
+  },
+  {
+    name: 'Team B',
+    type: 'area',
+    data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43]
+  },
+  {
+    name: 'Team C',
+    type: 'line',
+    data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39]
+  }
+];
 
 export default function LineChart() {
 
@@ -56,27 +73,30 @@ export default function LineChart() {
     API.get('/')
     .then(response=>{
       var temp=response.data.data
-      var ss=_.groupBy(temp,'University Rating')
-      var a=_.transform(ss, function(result, value, key) {
-        result[key]=value.length
-        return result
-      })
-      var temp=[]
-      for(var [key,value] of Object.entries(a))
+      var mapped = _.map(temp, _.partialRight(_.pick, ['GRE Score', 'Chance of Admit']));
+      
+      var t2=[]
+      for(var [key,value] of Object.entries(mapped))
       {
-          temp.push({x:key,y:value})
+        t2.push([value['GRE Score'],value['Chance of Admit']])
       }
-      setData(temp)
-
-    })
+      setData(t2)
+    console.log(t2)
+  })
   },[]);
   
   const chartOptions = merge(BaseOptionChart(), {
-    stroke: { width: [0, 2, 3] },
+    stroke: { width: 0 },
     plotOptions: { bar: { columnWidth: '11%', borderRadius: 4 } },
     fill: { type: ['solid', 'gradient', 'solid'] },
-    
-    xaxis: { type: 'category' },
+    labels: [
+      '01/01/2003',
+      '02/01/2003',
+      '03/01/2003',
+      '04/01/2003',
+      '05/01/2003',
+    ],
+    xaxis: { type: 'datetime' },
     tooltip: {
       shared: true,
       intersect: false,
@@ -90,12 +110,34 @@ export default function LineChart() {
       }
     }
   });
-
+  const option={
+    chart: {
+      height: 350,
+      type: 'scatter',
+      zoom: {
+        enabled: true,
+        type: 'xy'
+      }
+    },
+    xaxis: {
+      tickAmount: 10,
+      labels: {
+        formatter: function(val) {
+          return parseFloat(val).toFixed(1)
+        }
+      }
+    },
+    yaxis: {
+      tickAmount: 7
+    }
+  }
+  
   return (
     <Card>
       <CardHeader title="University Rating" />
       <Box sx={{ p: 3, pb: 1 }} dir="ltr">
-        {data!=null && <ReactApexChart type="line" series={[{data:data}]} options={chartOptions} height={280} />}
+        {data!=null && <ReactApexChart options={option} series={[{data:data}]} type="scatter" height={350} />}
+        {data!=null && <ReactApexChart type="line" series={[{data:data}]} options={chartOptions} height={364} />}
       </Box>
     </Card>
   );
