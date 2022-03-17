@@ -80,29 +80,44 @@ export default function AppCurrentVisits() {
   useEffect(() => {
       API.get('/')
       .then(response=>{
+        console.log(response.data[1])
+        for(var data1 of response.data)
+        {
+          // friends: "++id,s_no, gre, tofel, ur, sop, lor, cgpa, research",
 
-        // for(var data1 of response.data)
-        // {
-        //   // friends: "++id,s_no, gre, tofel, ur, sop, lor, cgpa, research",
-
-        //    db.friends.add({s_no:data1[0],gre:data1[1],tofel:data1[2],ur:data1[3],sop:data1[4],lor:data1[5],cgpa:data1[6],reseach:data1[7]});
-        // }
-
-          var result=new Map();
-          console.log(db.friends.toArray())
+           db.friends.add({s_no:data1[0],gre:data1[1],tofel:data1[2],ur:data1[3],sop:data1[4],lor:data1[5],cgpa:data1[6],reseach:data1[7]});
+        }
+          // console.log(db.friends.get({id: 1}))
+          const result=new Map();
           db.friends.orderBy('gre').eachKey(date => {
+  
             if(date!="GRE Score")
             {
-              console.log(result.get("fuck"))
-              result.set("fuck",1)
+              if(result.has(date))
+                result.set(date,result.get(date)+1)
+              else
+              {
+                result.set(date,1)
+              }
+              //console.log(result.get(date))
+              // console.log(typeof date)
             }
             
           })
-          console.log(result.get("fuck"))
-          console.log(result)
+          result.forEach(function(value,key){
+            console.log(key)
+            console.log(value)
+          })
+          
+
+          })
+          // console.log(result.entries())
+          // console.log(result.get(Number('339')))
+          
+
           // setPosts(response.data);
       });
-  },[])
+  
 
 
   return (

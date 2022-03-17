@@ -20,7 +20,6 @@ router.get('/',authenticate.verifyUser, function(req, res, next) {
   DataSet.find({author:req.user._id})
     .populate('author')
     .then(data=>{
-      
       axios.get(data[0].DataSetURL)
       .then(body=>{
 
