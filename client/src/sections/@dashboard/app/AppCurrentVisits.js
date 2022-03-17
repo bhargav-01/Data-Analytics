@@ -1,9 +1,9 @@
-import {useEffect} from 'react'
+import {useEffect, useState} from 'react'
 import { merge } from 'lodash';
 import ReactApexChart from 'react-apexcharts';
 // material
 import { useTheme, styled } from '@mui/material/styles';
-import { Card, CardHeader } from '@mui/material';
+import {Box,  Card, CardHeader } from '@mui/material';
 // utils
 import { fNumber } from '../../../utils/formatNumber';
 //
@@ -12,8 +12,8 @@ import { AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 
 // db
-import Dexie from 'dexie';
 import { daysToWeeks } from 'date-fns';
+const _ = require("lodash");
 
 // ----------------------------------------------------------------------
 
@@ -38,20 +38,33 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const CHART_DATA = [4344, 5435, 1443, 4443];
+// const CHART_DATA = [4344, 5435, 1443, 4443];
 
 export default function AppCurrentVisits() {
 
-  const db = new Dexie('myDatabase');
-  db.version(1).stores({
-    friends: "++id,s_no, gre, tofel, ur, sop, lor, cgpa, research",
-  });
   const token = localStorage.getItem("token")
   const theme = useTheme();
   const API = axios.create({
     baseURL: 'http://localhost:3001/dataset/',
     headers: {'Authorization': `Bearer ${token}`}
   });
+  const [data,setData]=useState('')
+
+
+  useEffect(() =>{
+    // var a=[]
+    API.get('/')
+    .then(response=>{
+      var temp=response.data.data
+      var ss=_.groupBy(temp,'University Rating')
+      var a=_.transform(ss, function(result, value, key) {
+        result[key]=value.length
+        return result
+      })
+      setData(a)
+    })
+  },[]);
+  
   const chartOptions = merge(BaseOptionChart(), {
     colors: [
       theme.palette.primary.main,
@@ -59,7 +72,7 @@ export default function AppCurrentVisits() {
       theme.palette.warning.main,
       theme.palette.error.main
     ],
-    labels: ['America', 'Asia', 'Europe', 'Africa'],
+    labels: data!=null && Object.keys(data) ,
     stroke: { colors: [theme.palette.background.paper] },
     legend: { floating: true, horizontalAlign: 'center' },
     dataLabels: { enabled: true, dropShadow: { enabled: false } },
@@ -77,39 +90,29 @@ export default function AppCurrentVisits() {
     }
   });
 
-  useEffect(() => {
-      API.get('/')
-      .then(response=>{
-
-        // for(var data1 of response.data)
-        // {
-        //   // friends: "++id,s_no, gre, tofel, ur, sop, lor, cgpa, research",
-
-        //    db.friends.add({s_no:data1[0],gre:data1[1],tofel:data1[2],ur:data1[3],sop:data1[4],lor:data1[5],cgpa:data1[6],reseach:data1[7]});
-        // }
-
-          var result=new Map();
-          console.log(db.friends.toArray())
-          db.friends.orderBy('gre').eachKey(date => {
-            if(date!="GRE Score")
-            {
-              console.log(result.get("fuck"))
-              result.set("fuck",1)
-            }
-            
-          })
-          console.log(result.get("fuck"))
-          console.log(result)
-          // setPosts(response.data);
-      });
-  },[])
-
+  // const chartOptions = merge(BaseOptionChart(), {
+  //   tooltip: {
+  //     marker: { show: false },
+  //     y: {
+  //       formatter: (seriesName) => fNumber(seriesName),
+  //       title: {
+  //         formatter: (seriesName) => `#${seriesName}`
+  //       }
+  //     }
+  //   },
+  //   plotOptions: {
+  //     bar: { horizontal: true, barHeight: '28%', borderRadius: 2 }
+  //   },
+  //   xaxis: {
+  //     categories: ''
+  //   }
+  // });
 
   return (
     <Card>
-      <CardHeader title="Current Visits" />
+      <CardHeader title="University Rating" />
       <ChartWrapperStyle dir="ltr">
-        <ReactApexChart type="pie" series={CHART_DATA} options={chartOptions} height={280} />
+        {data!=null && <ReactApexChart type="pie" series={Object.values(data)} options={chartOptions} height={280} />}
       </ChartWrapperStyle>
     </Card>
   );
