@@ -40,7 +40,7 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
 
 // const CHART_DATA = [4344, 5435, 1443, 4443];
 
-export default function AppCurrentVisits() {
+export default function LineChart() {
 
   const token = localStorage.getItem("token")
   const theme = useTheme();
@@ -61,62 +61,42 @@ export default function AppCurrentVisits() {
         result[key]=value.length
         return result
       })
-      setData(a)
+      var temp=[]
+      for(var [key,value] of Object.entries(a))
+      {
+          temp.push({x:key,y:value})
+      }
+      setData(temp)
+
     })
   },[]);
   
   const chartOptions = merge(BaseOptionChart(), {
-    colors: [
-      theme.palette.primary.main,
-      theme.palette.info.main,
-      theme.palette.warning.main,
-      theme.palette.error.main
-    ],
-    labels: data!=null && Object.keys(data) ,
-    stroke: { colors: [theme.palette.background.paper] },
-    legend: { floating: true, horizontalAlign: 'center' },
-    dataLabels: { enabled: true, dropShadow: { enabled: false } },
+    stroke: { width: [0, 2, 3] },
+    plotOptions: { bar: { columnWidth: '11%', borderRadius: 4 } },
+    fill: { type: ['solid', 'gradient', 'solid'] },
+    
+    xaxis: { type: 'category' },
     tooltip: {
-      fillSeriesColor: false,
+      shared: true,
+      intersect: false,
       y: {
-        formatter: (seriesName) => fNumber(seriesName),
-        title: {
-          formatter: (seriesName) => `#${seriesName}`
+        formatter: (y) => {
+          if (typeof y !== 'undefined') {
+            return `${y.toFixed(0)} visits`;
+          }
+          return y;
         }
       }
-    },
-    plotOptions: {
-      pie: { donut: { labels: { show: false } } }
     }
   });
-
-
-  
-
-  // const chartOptions = merge(BaseOptionChart(), {
-  //   tooltip: {
-  //     marker: { show: false },
-  //     y: {
-  //       formatter: (seriesName) => fNumber(seriesName),
-  //       title: {
-  //         formatter: (seriesName) => `#${seriesName}`
-  //       }
-  //     }
-  //   },
-  //   plotOptions: {
-  //     bar: { horizontal: true, barHeight: '28%', borderRadius: 2 }
-  //   },
-  //   xaxis: {
-  //     categories: ''
-  //   }
-  // });
 
   return (
     <Card>
       <CardHeader title="University Rating" />
-      <ChartWrapperStyle dir="ltr">
-        {data!=null && <ReactApexChart type="pie" series={Object.values(data)} options={chartOptions} height={280} />}
-      </ChartWrapperStyle>
+      <Box sx={{ p: 3, pb: 1 }} dir="ltr">
+        {data!=null && <ReactApexChart type="line" series={[{data:data}]} options={chartOptions} height={280} />}
+      </Box>
     </Card>
   );
 }

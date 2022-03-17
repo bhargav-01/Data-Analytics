@@ -16,6 +16,7 @@ import {
   AppTrafficBySite,
   AppCurrentSubject,
   AppConversionRates,
+  LineChart
 } from '../sections/@dashboard/app';
 import AppUploadData from '../sections/@dashboard/app/AppUploadData';
 // ----------------------------------------------------------------------
@@ -48,6 +49,10 @@ export default function DashboardApp() {
             <AppWebsiteVisits />
           </Grid>
 
+          <Grid item xs={12} md={6} lg={8}>
+            <LineChart />
+          </Grid>
+          
           <Grid item xs={12} md={6} lg={4}>
             <AppCurrentVisits />
           </Grid>
