@@ -9,6 +9,7 @@ import {
   AppItemOrders,
   AppNewsUpdate,
   AppWeeklySales,
+  AppExcel,
   AppOrderTimeline,
   AppCurrentVisits,
   AppWebsiteVisits,
@@ -73,6 +74,9 @@ export default function DashboardApp() {
 
           <Grid item xs={12} md={6} lg={8}>
             <AppTasks />
+          </Grid>
+          <Grid item xs={12} md={12} lg={12}>
+            <AppExcel />
           </Grid>
         </Grid>
       </Container>

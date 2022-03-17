@@ -9,7 +9,7 @@ import { BaseOptionChart } from '../../../components/charts';
 
 // ----------------------------------------------------------------------
 
-const CHART_DATA = [{ data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380] }];
+const CHART_DATA = [{ data: [400, 1000, 448, 470, 540, 580, 690, 1100, 1200, 1380] }];
 
 export default function AppConversionRates() {
   const chartOptions = merge(BaseOptionChart(), {
