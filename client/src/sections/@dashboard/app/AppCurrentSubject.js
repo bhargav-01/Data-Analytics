@@ -62,7 +62,7 @@ export default function AppCurrentSubject() {
   });
 
   return (
-    <Card>
+    <Card sx={{ height: '100%' }}>
       <CardHeader title="Current Subject" />
       <ChartWrapperStyle dir="ltr">
         <ReactApexChart type="radar" series={CHART_DATA} options={chartOptions} height={340} />

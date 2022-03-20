@@ -45,8 +45,7 @@ export default function LoginForm() {
       .then(response=>{
           console.log(response.data.token)
           localStorage.setItem('token',response.data.token);
-          console.log(localStorage.getItem('token'))
-          navigate('/dashboard', { replace: true });
+          navigate('/dashboard/app', { replace: true });
       })
       .catch(error => {
           alert(error);

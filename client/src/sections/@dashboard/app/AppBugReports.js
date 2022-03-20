@@ -38,7 +38,7 @@ const TOTAL = 234;
 
 export default function AppBugReports() {
   return (
-    <RootStyle>
+    <RootStyle sx={{ height: '100%' }}>
       <IconWrapperStyle>
         <Iconify icon="ant-design:bug-filled" width={24} height={24} />
       </IconWrapperStyle>

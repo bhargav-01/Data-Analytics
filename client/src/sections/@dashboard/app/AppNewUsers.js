@@ -38,7 +38,7 @@ const TOTAL = 1352831;
 
 export default function AppNewUsers() {
   return (
-    <RootStyle>
+    <RootStyle sx={{ height: '100%' }}>
       <IconWrapperStyle>
         <Iconify icon="ant-design:apple-filled" width={24} height={24} />
       </IconWrapperStyle>

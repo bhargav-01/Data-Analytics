@@ -45,7 +45,7 @@ export default function RegisterForm() {
         .then(response=>{
           alert("ss")
             localStorage.setItem('token',response.data.token);
-            navigate('/dashboard', { replace: true });
+            navigate('/dashboard/app', { replace: true });
         })
         .catch(error => {
             alert(error);

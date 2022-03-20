@@ -9,8 +9,10 @@ import { HelmetProvider } from 'react-helmet-async';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import reportWebVitals from './reportWebVitals';
-
+import "react-grid-layout/css/styles.css";
+import "react-resizable/css/styles.css";
 // ----------------------------------------------------------------------
+const gridProps = window.gridProps || {};
 
 ReactDOM.render(
   <HelmetProvider>

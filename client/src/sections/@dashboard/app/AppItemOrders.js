@@ -38,7 +38,7 @@ const TOTAL = 1723315;
 
 export default function AppItemOrders() {
   return (
-    <RootStyle>
+    <RootStyle sx={{ height: '100%' }}>
       <IconWrapperStyle>
         <Iconify icon="ant-design:windows-filled" width={24} height={24} />
       </IconWrapperStyle>

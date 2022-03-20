@@ -3,7 +3,7 @@ import { merge } from 'lodash';
 import ReactApexChart from 'react-apexcharts';
 // material
 import { useTheme, styled } from '@mui/material/styles';
-import {Box,  Card, CardHeader } from '@mui/material';
+import {Box, Stack, Card, CardHeader,Container,MenuItem, TextField, Typography } from '@mui/material';
 // utils
 import { fNumber } from '../../../utils/formatNumber';
 //
@@ -40,7 +40,7 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
 
 // const CHART_DATA = [4344, 5435, 1443, 4443];
 
-export default function AppCurrentVisits() {
+export default function PieChart() {
 
   const token = localStorage.getItem("token")
   const theme = useTheme();
@@ -48,21 +48,30 @@ export default function AppCurrentVisits() {
     baseURL: 'http://localhost:3001/dataset/',
     headers: {'Authorization': `Bearer ${token}`}
   });
-  const [data,setData]=useState('')
-
+  const [pieData,setPieData]=useState(null)
+  const [data,setData]=useState(null)
+  const [label,setLabel]=useState(null)
+  const [options,setOptions]=useState(null)
 
   useEffect(() =>{
-    // var a=[]
-    API.get('/')
-    .then(response=>{
-      var temp=response.data.data
-      var ss=_.groupBy(temp,'University Rating')
-      var a=_.transform(ss, function(result, value, key) {
-        result[key]=value.length
-        return result
-      })
-      setData(a)
-    })
+    if(data==null)
+    {
+        API.get('/')
+        .then(response=>{
+          var temp=response.data.data;
+          setData(response.data.data)
+          var ss=_.groupBy(temp,response.data.header[1])
+          var a=_.transform(ss, function(result, value, key) {
+            result[key]=value.length
+            return result
+          })
+          setLabel(Object.keys(a))
+          // console.log(response.data.header)
+          setOptions(response.data.header)
+          setSelected(response.data.header[1]);
+          setPieData(a)
+        })
+    }
   },[]);
   
   const chartOptions = merge(BaseOptionChart(), {
@@ -72,7 +81,7 @@ export default function AppCurrentVisits() {
       theme.palette.warning.main,
       theme.palette.error.main
     ],
-    labels: data!=null && Object.keys(data) ,
+    labels: label!=null && label ,
     stroke: { colors: [theme.palette.background.paper] },
     legend: { floating: true, horizontalAlign: 'center' },
     dataLabels: { enabled: true, dropShadow: { enabled: false } },
@@ -90,32 +99,41 @@ export default function AppCurrentVisits() {
     }
   });
 
+  const [selected,setSelected]=useState(null)
 
-  
-
-  // const chartOptions = merge(BaseOptionChart(), {
-  //   tooltip: {
-  //     marker: { show: false },
-  //     y: {
-  //       formatter: (seriesName) => fNumber(seriesName),
-  //       title: {
-  //         formatter: (seriesName) => `#${seriesName}`
-  //       }
-  //     }
-  //   },
-  //   plotOptions: {
-  //     bar: { horizontal: true, barHeight: '28%', borderRadius: 2 }
-  //   },
-  //   xaxis: {
-  //     categories: ''
-  //   }
-  // });
-
+  const handelchange=(e)=>{
+    setSelected(e.target.value);
+    var temp=data;
+    var ss=_.groupBy(temp,e.target.value)
+    var a=_.transform(ss, function(result, value, key) {
+      result[key]=value.length
+      return result
+    })
+    setLabel(Object.keys(a))
+    setPieData(a);
+  }
   return (
-    <Card>
-      <CardHeader title="University Rating" />
+    <Card sx={{ height: '100%' }}>
+      <CardHeader title={'Pie Chart'} />
+      <Container>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+            <Typography variant="h5" gutterBottom>
+              Column
+            </Typography>
+            
+            {options!=null && <TextField select size="small" value={selected} onChange={(e)=>handelchange(e)}  >
+              {options.map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+          </TextField>}
+        </Stack>
+      </Container>
+
+      
       <ChartWrapperStyle dir="ltr">
-        {data!=null && <ReactApexChart type="pie" series={Object.values(data)} options={chartOptions} height={280} />}
+        {pieData!=null && <ReactApexChart type="pie" series={Object.values(pieData)} options={chartOptions} height={280} />}
       </ChartWrapperStyle>
     </Card>
   );

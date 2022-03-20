@@ -33,7 +33,7 @@ function TaskItem({ task, checked, formik, ...other }) {
   const { getFieldProps } = formik;
 
   return (
-    <Stack direction="row" justifyContent="space-between" sx={{ py: 0.75 }}>
+    <Stack direction="row" justifyContent="space-between" sx={{ py: 0.75 }} >
       <FormControlLabel
         control={
           <Checkbox {...getFieldProps('checked')} value={task} checked={checked} {...other} />
@@ -69,7 +69,7 @@ export default function AppTasks() {
   const { values, handleSubmit } = formik;
 
   return (
-    <Card>
+    <Card sx={{ height: '100%' }}>
       <CardHeader title="Tasks" />
       <Box sx={{ px: 3, py: 1 }}>
         <FormikProvider value={formik}>
