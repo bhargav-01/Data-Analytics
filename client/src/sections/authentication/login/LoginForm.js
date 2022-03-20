@@ -43,7 +43,9 @@ export default function LoginForm() {
         password: formik.values.password,
       })
       .then(response=>{
+          console.log(response.data.token)
           localStorage.setItem('token',response.data.token);
+          console.log(localStorage.getItem('token'))
           navigate('/dashboard', { replace: true });
       })
       .catch(error => {

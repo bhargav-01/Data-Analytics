@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import firebaseConfig  from '../../../firebaseIni';
 import { getStorage,ref,uploadBytes,getDownloadURL } from "firebase/storage";
 import { initializeApp } from "firebase/app";
-import React,{useState,useEffect} from 'react';
+import React,{useState,useEffect,useReducer} from 'react';
 import axios from 'axios';
 // material
 import { styled } from '@mui/material/styles';
@@ -12,11 +12,11 @@ import { Box,Button, Grid, Card, Paper, Typography, Input, CardHeader, CardConte
 import { fShortenNumber } from '../../../utils/formatNumber';
 // component
 import Iconify from '../../../components/Iconify';
+import _ from 'lodash';
 
 
 
-
-export default function AppUploadData() {
+export default function UploadData(props) {
     const firebaseApp = initializeApp(firebaseConfig);
     const storage = getStorage(firebaseApp);
     const token = localStorage.getItem("token")
@@ -25,8 +25,26 @@ export default function AppUploadData() {
     });
     const [CSV,setCSV]=useState('');
 
-    const UploadData=(event)=>{
+    const instance = axios.create({
+        baseURL: 'http://localhost:3001',
+        headers:{'Authorization':`Bearer ${localStorage.getItem('token')}`}
+    });
+    const [alldatasets,setDatasets]=useState(null)
+    useEffect(() => {
+       
+        instance.get('/dataset/datadisplay')
+        .then(response=>{
+            console.log(response.data)
+            setDatasets(response.data);
+            
+        });
+        console.log('EH')
+        console.log(alldatasets)
+    },[])
+
+    const UploadData1=(event)=>{
         event.preventDefault();
+        console.log(event.name)
         const now= new Date();
         const storageRef = ref(storage,`${now.getFullYear()}${now.getMonth()}${now.getDate()}${now.getTime()}.csv`);
         console.log(event.target.files[0]);
@@ -37,7 +55,7 @@ export default function AppUploadData() {
                 console.log(url);
                 alert(url);
                 setCSV(url);
-                axios.post('http://localhost:3001/dataset',{DataSetName:event.target.files[0].name,DataSetURL:url},{
+                axios.post('http://localhost:3001/dataset',{DataSetName:event.name,DataSetURL:url},{
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -50,12 +68,24 @@ export default function AppUploadData() {
     }
   
     return (
+    <div>
+    {alldatasets!=null && alldatasets.map((dataset) => {
+                    return (
+                        <div className="col-12">
+                            {dataset.DataSetName}<br></br>
+                            {/* {dataset} */}
+                        </div>
+                    );
+                })}
+    {/* {alldatasets}
+     */}
+    
     <Card>
-      <CardHeader title="Traffic by Site" />
+      <CardHeader/>
       <CardContent>
         <Grid container spacing={2}>
         <label htmlFor="contained-button-file">
-                <Input accept=".csv" id="contained-button-file" multiple type="file" onChange={UploadData}/>
+                <Input accept=".csv" id="contained-button-file" multiple type="file" onChange={UploadData1}/>
                 <Button
                     variant="contained"
                     component="span"
@@ -63,7 +93,7 @@ export default function AppUploadData() {
                     startIcon={<Iconify icon="eva:plus-fill" />}
                     
                 >
-                    Upload DataSet
+                    Upload New DataSet
                 </Button>
             </label>
 
@@ -77,5 +107,6 @@ export default function AppUploadData() {
         </Grid>
       </CardContent>
     </Card>
+    </div>
   );
 }

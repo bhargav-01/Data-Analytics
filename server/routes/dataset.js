@@ -48,6 +48,18 @@ router.get('/',authenticate.verifyUser, function(req, res, next) {
     })
 });
 
+router.get('/datadisplay',authenticate.verifyUser, function(req, res, next) {
+  DataSet.find({author:req.user._id})
+    .populate('author')
+    .then(data=>{
+      
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(data);
+      
+    })
+});
+
 router.post('/',authenticate.verifyUser, (req, res, next) => {
   
     req.body.author = req.user._id;
