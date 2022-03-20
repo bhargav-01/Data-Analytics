@@ -53,7 +53,7 @@ OrderItem.propTypes = {
 function OrderItem({ item, isLast }) {
   const { type, title, time } = item;
   return (
-    <TimelineItem>
+    <TimelineItem sx={{ height: '100%' }}>
       <TimelineSeparator>
         <TimelineDot
           sx={{

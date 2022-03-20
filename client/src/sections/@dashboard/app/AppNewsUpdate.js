@@ -58,7 +58,7 @@ function NewsItem({ news }) {
 
 export default function AppNewsUpdate() {
   return (
-    <Card>
+    <Card  sx={{ height: '100%' }}>
       <CardHeader title="News Update" />
 
       <Scrollbar>

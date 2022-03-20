@@ -86,8 +86,6 @@ export default function ScatterChart() {
           {
             t2.push([value[response.data.header[0]],value[response.data.header[1]]])
           }
-          t2.sort(function(a,b){ return a[0]-b[0]});
-          // console.log("hello",t2[0]);
           setselectX(response.data.header[0]);
           setselectY(response.data.header[1]);
           setChartData(t2);
@@ -107,14 +105,13 @@ export default function ScatterChart() {
     {
       t2.push([value[e.target.value],value[selecty]])
     }
-    t2.sort(function(a,b){ return a[0]-b[0]});
     setChartData(t2);
   }
 
   const handelchangeY=(e)=>{
     setselectY(e.target.value);
-    // console.log(e.target.value)
-    // console.log(selectx," ",selecty)
+    console.log(e.target.value)
+    console.log(selectx," ",selecty)
     var temp=data; 
     var mapped = _.map(temp, _.partialRight(_.pick, [selectx, e.target.value]));
     var t2=[]
@@ -122,47 +119,22 @@ export default function ScatterChart() {
     {
       t2.push([value[selectx],value[e.target.value]])
     }
-    t2.sort(function(a,b){ return a[0]-b[0]});
+    console.log("t2",t2)
     setChartData(t2);
   }
 
   const chartOptions = merge(BaseOptionChart(), {
-    stroke: { width: 2 },
+    stroke: { width: 0 },
     plotOptions: { bar: { columnWidth: '11%', borderRadius: 4 } },
-    colors:['#ffe700'],
-    fill: {
-        type: "gradient",
-        gradient: {
-        //   shadeIntensity: 0.1,
-          opacityFrom: 0.5,
-          opacityTo: 0,
-          stops: [0, 90]
-        }
-    },
-    zoom: {
-        enabled: true,
-        type: 'x',  
-        autoScaleYaxis: false,  
-        zoomedArea: {
-          fill: {
-            color: '#90CAF9',
-            opacity: 0.4
-          },
-          stroke: {
-            color: '#0D47A1',
-            opacity: 0.4,
-            width: 1
-          }
-        }
-    },
-    xaxis: {
-        tickAmount: 10,
-        labels: {
-          formatter: function(val) {
-            return parseFloat(val).toFixed(1)
-          }
-        }
-    },
+    fill: { type: ['solid', 'gradient', 'solid'] },
+    labels: [
+      '01/01/2003',
+      '02/01/2003',
+      '03/01/2003',
+      '04/01/2003',
+      '05/01/2003',
+    ],
+    xaxis: { type: 'datetime' },
     tooltip: {
       shared: true,
       intersect: false,
@@ -176,46 +148,41 @@ export default function ScatterChart() {
       }
     }
   });
-//   const option={
-//     stroke: {
-//         width: 3,
-//         curve: 'smooth',
-//     },
-//     plotOptions: { bar: { columnWidth: '11%', borderRadius: 4 } },
+  const option={
+    plotOptions: { bar: { columnWidth: '11%', borderRadius: 4 } },
 
-//     chart: {
-//       height: 350,
-//       type: 'line',
-//       // zoom: {
-//       //   enabled: true,
-//       //   type: 'xy'
-//       // }
-//     },
-//     xaxis: {
-//         // labe
-//     //   tickAmount: 10,
-//     //   labels: {
-//     //     formatter: function(val) {
-//     //       return parseFloat(val).toFixed(1)
-//     //     }
-//     //   }
-//     },
-//     yaxis: {
-//       tickAmount: 7
-//     },
-//     tooltip: {
-//       shared: true,
-//       intersect: false,
-//       y: {
-//         formatter: (y) => {
-//           if (typeof y !== 'undefined') {
-//             return `${y.toFixed(0)} visits`;
-//           }
-//           return y;
-//         }
-//       }
-//     }
-//   }
+    chart: {
+      height: 350,
+      type: 'scatter',
+      // zoom: {
+      //   enabled: true,
+      //   type: 'xy'
+      // }
+    },
+    xaxis: {
+      tickAmount: 10,
+      labels: {
+        formatter: function(val) {
+          return parseFloat(val).toFixed(1)
+        }
+      }
+    },
+    yaxis: {
+      tickAmount: 7
+    },
+    tooltip: {
+      shared: true,
+      intersect: false,
+      y: {
+        formatter: (y) => {
+          if (typeof y !== 'undefined') {
+            return `${y.toFixed(0)} visits`;
+          }
+          return y;
+        }
+      }
+    }
+  }
 
   return (
     <Card sx={{ height: '100%' }}>
@@ -249,7 +216,7 @@ export default function ScatterChart() {
         </Stack>
       </Container>
       <Box sx={{ p: 3, pb: 1 }} dir="ltr">
-        {chartData!=null && <ReactApexChart options={chartOptions} series={[{data:chartData}]} type="area" height={350} />}
+        {chartData!=null && <ReactApexChart options={option} series={[{data:chartData}]} type="scatter" height={350} />}
       </Box>
     </Card>
   );

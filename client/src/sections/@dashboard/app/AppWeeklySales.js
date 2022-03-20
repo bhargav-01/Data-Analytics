@@ -38,7 +38,7 @@ const TOTAL = 714000;
 
 export default function AppWeeklySales() {
   return (
-    <RootStyle>
+    <RootStyle sx={{ height: '100%' }}>
       <IconWrapperStyle>
         <Iconify icon="ant-design:android-filled" width={24} height={24} />
       </IconWrapperStyle>

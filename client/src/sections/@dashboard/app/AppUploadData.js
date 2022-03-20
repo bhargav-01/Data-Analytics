@@ -24,7 +24,7 @@ export default function AppUploadData() {
         display: 'none',
     });
     const [CSV,setCSV]=useState('');
-
+    
     const UploadData=(event)=>{
         event.preventDefault();
         const now= new Date();
@@ -50,7 +50,7 @@ export default function AppUploadData() {
     }
   
     return (
-    <Card>
+    <Card  sx={{ height: '100%' }}>
       <CardHeader title="Traffic by Site" />
       <CardContent>
         <Grid container spacing={2}>

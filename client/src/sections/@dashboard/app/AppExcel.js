@@ -21,12 +21,12 @@ export default function AppExcel() {
     useEffect(()=>{
         API.get('/')
         .then(response=>{
-            console.log(response.data.data)
+            // console.log(response.data.data)
             setans(response.data.data)
             var temp=[];
             for(var column of response.data.header)
             {
-                console.log(column)
+                // console.log(column)
                 if(column!='id')
                 {
                     temp.push({field: column,
@@ -44,7 +44,7 @@ export default function AppExcel() {
     },[])
 
     return (
-        <Card>
+        <Card sx={{ height: '100%' }}>
             <CardHeader title="Data" />
             <Box sx={{ px: 3, py: 1 }}>
                 <div style={{ height: 600, width: '100%' }}>
