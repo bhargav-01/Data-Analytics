@@ -10,7 +10,6 @@ import AccountPopover from './AccountPopover';
 import LanguagePopover from './LanguagePopover';
 import NotificationsPopover from './NotificationsPopover';
 import DropDownData from './DropDownData';
-
 // ----------------------------------------------------------------------
 
 const DRAWER_WIDTH = 280;

@@ -25,7 +25,7 @@ import {
   ScatterChart,
   LineChart,
   RadarChart,
-  TopBar
+  TopBar,
 } from '../sections/@dashboard/app';
 import AppUploadData from '../sections/@dashboard/app/AppUploadData';
 import { Responsive as ResponsiveGridLayout } from "react-grid-layout";
@@ -68,7 +68,7 @@ const componentList = JSON.parse(localStorage.getItem('componentList')) ||{
   4: "ScatterChart",
   5: "AppHeatMap",
   6: "AppExcel",
-  7:"PieChart"
+  7:"PieChart",
 };
 
 const components = {
@@ -92,7 +92,8 @@ export default class DashboardApp extends React.Component {
       currentBreakpoint: "lg",
       compactType: "vertical",
       mounted: false,
-      layouts:getFromLS("layouts")|| { lg: props.initialLayout }
+      layouts:getFromLS("layouts")|| { lg: props.initialLayout },
+      data: null
     };
     this.onLayoutSave=this.onLayoutSave.bind(this);
     this.onLayoutChange = this.onLayoutChange.bind(this);
@@ -102,6 +103,7 @@ export default class DashboardApp extends React.Component {
 
   onLayoutChange = (_, allLayouts) => {
     this.setState({layouts:allLayouts});
+
   };
   
   onAddItem = (itemId) => {
@@ -122,6 +124,7 @@ export default class DashboardApp extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true });
+    localStorage.getItem('dataURL')
   }
 
   onLayoutSave = () => {

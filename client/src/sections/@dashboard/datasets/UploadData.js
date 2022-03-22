@@ -30,24 +30,24 @@ export default function UploadData(props) {
         headers:{'Authorization':`Bearer ${localStorage.getItem('token')}`}
     });
     const [alldatasets,setDatasets]=useState(null)
-    useEffect(() => {
+    // useEffect(() => {
        
-        instance.get('/dataset/datadisplay')
-        .then(response=>{
-            console.log(response.data)
-            setDatasets(response.data);
+    //     instance.get('/dataset/datadisplay')
+    //     .then(response=>{
+    //         console.log(response.data)
+    //         setDatasets(response.data);
             
-        });
-        console.log('EH')
-        console.log(alldatasets)
-    },[])
+    //     });
+    //     console.log('EH')
+    //     console.log(alldatasets)
+    // },[])
 
     const UploadData1=(event)=>{
         event.preventDefault();
         console.log(event.name)
         const now= new Date();
         const storageRef = ref(storage,`${now.getFullYear()}${now.getMonth()}${now.getDate()}${now.getTime()}.csv`);
-        console.log(event.target.files[0]);
+        console.log(event.target.files);
         uploadBytes(storageRef,event.target.files[0])
         .then((snapshot) => {
             getDownloadURL(storageRef)
@@ -55,7 +55,7 @@ export default function UploadData(props) {
                 console.log(url);
                 alert(url);
                 setCSV(url);
-                axios.post('http://localhost:3001/dataset',{DataSetName:event.name,DataSetURL:url},{
+                axios.post('http://localhost:3001/dataset',{DataSetName:event.target.files[0].name,DataSetURL:url},{
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

@@ -3,7 +3,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import { TextField } from '@mui/material';
 import axios from 'axios';
-export default function DropDownData() {
+export default function SelectDataSet(props) {
     const instance = axios.create({
         baseURL: 'http://localhost:3001',
         headers:{'Authorization':`Bearer ${localStorage.getItem('token')}`}
@@ -14,12 +14,10 @@ export default function DropDownData() {
        
         instance.get('/dataset/datadisplay')
         .then(response=>{
-            console.log(response.data)
             setDatasets(response.data);
             
         });
-        console.log('EH')
-        console.log(alldatasets)
+        
     },[])
   
   
@@ -33,9 +31,8 @@ export default function DropDownData() {
     const API = axios.create({
       baseURL: 'http://localhost:3001/dataset/datajson',
       headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`},
-      
-  //localStorage.getItem('dataURL')
     });
+    props.SelectSet(event.target.value)
     // localStorage.setItem('dataURL')
     // API.get('/', {params: {dataURL: event.target.value}})
     // .then(response=>{
