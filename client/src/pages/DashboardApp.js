@@ -86,6 +86,7 @@ export default class DashboardApp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      data:null,
       count:parseInt(localStorage.getItem('count')) ||10,
       items:JSON.parse(localStorage.getItem('originalItems'))|| originalItems,
       currentBreakpoint: "lg",
@@ -96,6 +97,7 @@ export default class DashboardApp extends React.Component {
     this.onLayoutSave=this.onLayoutSave.bind(this);
     this.onLayoutChange = this.onLayoutChange.bind(this);
     this.onAddItem=this.onAddItem.bind(this);
+    this.onRemoveItem=this.onRemoveItem.bind(this);
   }
 
   onLayoutChange = (_, allLayouts) => {
@@ -114,9 +116,8 @@ export default class DashboardApp extends React.Component {
   
   onRemoveItem = (itemId) => {
     this.setState((prevState) => {
-      return { items: [...prevState.items.filter((i)=>i!==), prevState.count.toString()],count:prevState.count+1}
+      return { items: prevState.items.filter((i)=>i!==itemId)}
     })  
-    setItems(items.filter((i) => i !== itemId));
   };
 
   componentDidMount() {
@@ -148,7 +149,7 @@ export default class DashboardApp extends React.Component {
           <Box
             key={key}
           >
-           <Widget component={components[componentList[key]]}/>
+           <Widget component={components[componentList[key]]} id={key} onRemoveItem={this.onRemoveItem}/>
           </Box>
         ))}
           {/* <Box key="1" >

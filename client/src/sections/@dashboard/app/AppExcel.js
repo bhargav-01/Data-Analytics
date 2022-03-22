@@ -1,13 +1,16 @@
 import React, { useEffect } from 'react'
 import axios from 'axios'
 import { DataGrid,GridToolbar } from '@mui/x-data-grid';
+import Iconify from "src/components/Iconify";
+
 import {
     Box,
     Card,
+    IconButton,
     CardHeader,
   } from '@mui/material';
 
-export default function AppExcel() {
+export default function AppExcel(props) {
     const [ans,setans]=React.useState(null);
     const [err,seterr]=React.useState(null);
     const [header,setHeader]=React.useState(null);
@@ -45,7 +48,11 @@ export default function AppExcel() {
 
     return (
         <Card sx={{ height: '100%' }}>
-            <CardHeader title="Data" />
+            <CardHeader title="Data"  action={
+                <IconButton aria-label="settings" onClick={()=>props.onRemoveItem(props.id)}>
+                    < Iconify icon="iconoir:cancel"/>
+                </IconButton>
+                }/>
             <Box sx={{ px: 3, py: 1 }}>
                 <div style={{ height: 600, width: '100%' }}>
                 { 

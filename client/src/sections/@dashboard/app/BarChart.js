@@ -3,13 +3,14 @@ import { merge } from 'lodash';
 import ReactApexChart from 'react-apexcharts';
 // material
 import { useTheme, styled } from '@mui/material/styles';
-import {Box, Stack, Card, CardHeader,Container,MenuItem, TextField, Typography } from '@mui/material';
+import {Box,IconButton, Stack, Card, CardHeader,Container,MenuItem, TextField, Typography } from '@mui/material';
 // utils
 import { fNumber } from '../../../utils/formatNumber';
 //
 import { BaseOptionChart } from '../../../components/charts';
 import { AnimatePresence } from 'framer-motion';
 import axios from 'axios';
+import Iconify from "src/components/Iconify";
 
 // db
 import { daysToWeeks } from 'date-fns';
@@ -40,7 +41,7 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
 
 // const CHART_DATA = [4344, 5435, 1443, 4443];
 
-export default function AppCurrentVisits() {
+export default function AppCurrentVisits(props) {
 
   const token = localStorage.getItem("token")
   const theme = useTheme();
@@ -131,7 +132,11 @@ export default function AppCurrentVisits() {
   }
   return (
     <Card sx={{ height: '100%' }}>
-      <CardHeader title={'Pie Chart'} />
+      <CardHeader title={'Pie Chart'} action={
+          <IconButton aria-label="settings" onClick={()=>props.onRemoveItem(props.id)}>
+            < Iconify icon="iconoir:cancel"/>
+          </IconButton>
+        }/>
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
             <Typography variant="h5" gutterBottom>

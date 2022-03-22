@@ -3,7 +3,9 @@ import { merge, result } from 'lodash';
 import ReactApexChart from 'react-apexcharts';
 // material
 import { useTheme, styled } from '@mui/material/styles';
-import {Box,  Card, CardHeader } from '@mui/material';
+import {Box, IconButton, Card, CardHeader } from '@mui/material';
+import Iconify from "src/components/Iconify";
+
 // utils
 import { fNumber } from '../../../utils/formatNumber';
 //
@@ -20,7 +22,7 @@ const _ = require("lodash");
 const CHART_HEIGHT = 372;
 const LEGEND_HEIGHT = 72;
 
-export default function AppHeatMap() {
+export default function AppHeatMap(props) {
 
   const token = localStorage.getItem("token")
   const theme = useTheme();
@@ -106,7 +108,11 @@ export default function AppHeatMap() {
 
   return (
     <Card sx={{ height: '100%' }}>
-      <CardHeader title="University Rating" />
+      <CardHeader title="University Rating"  action={
+        <IconButton aria-label="settings" onClick={()=>props.onRemoveItem(props.id)}>
+            < Iconify icon="iconoir:cancel"/>
+        </IconButton>
+        }/>
       <Box sx={{ p: 3, pb: 1 }} dir="ltr">
         {data!=null && <ReactApexChart options={option} series={data1} type="heatmap" height={350} />}
       </Box>

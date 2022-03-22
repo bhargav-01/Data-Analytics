@@ -3,13 +3,14 @@ import { merge } from 'lodash';
 import ReactApexChart from 'react-apexcharts';
 // material
 import { useTheme, styled } from '@mui/material/styles';
-import {Box,  Card, CardHeader,Container,MenuItem, TextField, Typography,Stack } from '@mui/material';
+import {Box, IconButton, Card, CardHeader,Container,MenuItem, TextField, Typography,Stack } from '@mui/material';
 // utils
 import { fNumber } from '../../../utils/formatNumber';
 //
 import { BaseOptionChart } from '../../../components/charts';
 import { AnimatePresence } from 'framer-motion';
 import axios from 'axios';
+import Iconify from "src/components/Iconify";
 
 // db
 import { daysToWeeks } from 'date-fns';
@@ -57,7 +58,7 @@ const CHART_DATA = [
   }
 ];
 
-export default function ScatterChart() {
+export default function ScatterChart(props) {
 
   const token = localStorage.getItem("token")
   const theme = useTheme();
@@ -186,7 +187,12 @@ export default function ScatterChart() {
 
   return (
     <Card sx={{ height: '100%' }}>
-      <CardHeader title="University Rating" />
+      <CardHeader title="University Rating" 
+       action={
+        <IconButton aria-label="settings" onClick={()=>props.onRemoveItem(props.id)}>
+          < Iconify icon="iconoir:cancel"/>
+        </IconButton>
+      }/>
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
             <Typography variant="h5" gutterBottom>
