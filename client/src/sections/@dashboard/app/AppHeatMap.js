@@ -49,22 +49,36 @@ export default function AppHeatMap(props) {
         // console.log("D",_.mapValues(mapped,header));
         t2.push({name:header,data:Object.values(_.mapValues(mapped,header))}); 
       }
+      console.log(t2)
       setData(t2)
       // console.log("dd",t2)
   })
   },[]);
   
   const option={
-    chart: {
-      height: 350,
-      type: 'heatmap',
+    heatmap: {
+      radius: 30,
+      enableShades: false,
+      colorScale: {
+        ranges: [{
+            from: 0,
+            to: 50,
+            color: '#008FFB'
+          },
+          {
+            from: 51,
+            to: 100,
+            color: '#00E396'
+          },
+        ],
+      },
+  
     },
     dataLabels: {
-      enabled: false
-    },
-    colors: ["#34eb34"],
-    title: {
-      text: 'HeatMap Chart (Single color)'
+      enabled: false,
+      style: {
+        colors: ['#00E396']
+      }
     },
   }
   const data1=[{
@@ -108,13 +122,13 @@ export default function AppHeatMap(props) {
 
   return (
     <Card sx={{ height: '100%' }}>
-      <CardHeader title="University Rating"  action={
+      <CardHeader title="HeatMap"  action={
         <IconButton aria-label="settings" onClick={()=>props.onRemoveItem(props.id)}>
             < Iconify icon="iconoir:cancel"/>
         </IconButton>
         }/>
       <Box sx={{ p: 3, pb: 1 }} dir="ltr">
-        {data!=null && <ReactApexChart options={option} series={data1} type="heatmap" height={350} />}
+        {data!=null && <ReactApexChart options={option} series={data} type="heatmap" height={350} />}
       </Box>
     </Card>
   );

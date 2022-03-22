@@ -84,10 +84,16 @@ export default function DataUpload(props) {
   return (
     <Page title="User DataSets">
         <Container>
-        <Typography variant="h4" gutterBottom>
-            User DataSets
-        </Typography>
-            <SelectDataSet SelectSet={SelectSet}></SelectDataSet>
+        <div style={{display: "flex"}}>
+            <Typography variant="h4" gutterBottom>
+                User DataSets
+            </Typography>
+            <div style={{"margin":"auto 0 auto auto"}}>
+              <SelectDataSet SelectSet={SelectSet} />
+            </div>
+            
+        </div>
+       
             <UploadData props={props}/>
             <DataExcel data={data} header={header}/>          
         </Container>

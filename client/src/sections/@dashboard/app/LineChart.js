@@ -54,29 +54,25 @@ export default function ScatterChart(props) {
   const [options,setOptions]=useState(null)
 
   useEffect(() =>{
-    if(data==null)
-    {  
-      // console.log("sss")
-        API.get('/')
-        .then(response=>{
-          var temp=response.data.data
-          setData(temp)
-          var mapped = _.map(temp, _.partialRight(_.pick, [response.data.header[0], response.data.header[1]]));
-          var t2=[]
-          for(var [key,value] of Object.entries(mapped))
-          {
-            t2.push([value[response.data.header[0]],value[response.data.header[1]]])
-          }
-          t2.sort(function(a,b){ return a[0]-b[0]});
-          // console.log("hello",t2[0]);
-          setselectX(response.data.header[0]);
-          setselectY(response.data.header[1]);
-          setChartData(t2);
-          setOptions(response.data.header)
-          // console.log("rr",t2)
-      })
+    if(props.data!=null)
+    {
+      var temp=props.data.data
+      setData(temp)
+      var mapped = _.map(temp, _.partialRight(_.pick, [props.data.header[0], props.data.header[1]]));
+      var t2=[]
+      for(var [key,value] of Object.entries(mapped))
+      {
+        t2.push([value[props.data.header[0]],value[props.data.header[1]]])
+      }
+      t2.sort(function(a,b){ return a[0]-b[0]});
+      // console.log("hello",t2[0]);
+      setselectX(props.data.header[0]);
+      setselectY(props.data.header[1]);
+      setChartData(t2);
+      setOptions(props.data.header)
     }
-  },[]);
+  },[props.data]);
+
   
   
   const handelchangeX=(e)=>{
@@ -200,7 +196,7 @@ export default function ScatterChart(props) {
 
   return (
     <Card sx={{ height: '100%' }}>
-      <CardHeader title="University Rating" 
+      <CardHeader title="Line Chart" 
          action={
           <IconButton aria-label="settings" onClick={()=>props.onRemoveItem(props.id)}>
             < Iconify icon="iconoir:cancel"/>
@@ -208,10 +204,10 @@ export default function ScatterChart(props) {
         }
       />
       <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+        {/* <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
             <Typography variant="h5" gutterBottom>
               X
-            </Typography>
+            </Typography> */}
             
             {options!=null && <TextField select size="small" value={selectx} onChange={(e)=>handelchangeX(e)}  >
               {options.map((option) => (
@@ -220,20 +216,20 @@ export default function ScatterChart(props) {
                 </MenuItem>
               ))}
           </TextField>}
-        </Stack>
+        {/* </Stack>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
             <Typography variant="h5" gutterBottom>
               Y
-            </Typography>
+            </Typography> */}
             
-            {options!=null && <TextField select size="small" value={selecty} onChange={(e)=>handelchangeY(e)}  >
+            {options!=null && <TextField select size="small" style={{marginLeft:"10px"}} value={selecty} onChange={(e)=>handelchangeY(e)}  >
               {options.map((option) => (
                 <MenuItem key={option} value={option}>
                   {option}
                 </MenuItem>
               ))}
           </TextField>}
-        </Stack>
+        {/* </Stack> */}
       </Container>
       <Box sx={{ p: 3, pb: 1 }} dir="ltr">
         {chartData!=null && <ReactApexChart options={chartOptions} series={[{data:chartData}]} type="area" height={350} />}

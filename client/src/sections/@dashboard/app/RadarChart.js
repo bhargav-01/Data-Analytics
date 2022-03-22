@@ -57,24 +57,22 @@ export default function AppCurrentVisits(props) {
   const [options,setOptions]=useState(null)
 
   useEffect(() =>{
-    if(data==null)
+    if(props.data!=null)
     {
-        API.get('/')
-        .then(response=>{
-          var temp=response.data.data;
-          setData(response.data.data)
-          var ss=_.groupBy(temp,response.data.header[1])
-          var a=_.transform(ss, function(result, value, key) {
-            result[key]=value.length
-            return result
-          })
-          setLabel(Object.keys(a))
-          setOptions(response.data.header)
-          setSelected(response.data.header[1]);
-          setPieData(a)
+        var temp=props.data.data;
+        setData(props.data.data)
+        var ss=_.groupBy(temp,props.data.header[1])
+        var a=_.transform(ss, function(result, value, key) {
+          result[key]=value.length
+          return result
         })
-    }
-  },[]);
+        setLabel(Object.keys(a))
+        setOptions(props.data.header)
+        setSelected(props.data.header[1]);
+        setPieData(a)
+      }
+  },[props.data]);
+ 
   const chartOptions = merge(BaseOptionChart(), {
     stroke: { width: 2 },
     fill: { opacity: 0.48 },
@@ -136,26 +134,26 @@ export default function AppCurrentVisits(props) {
   }
   return (
     <Card sx={{ height: '100%' }}>
-      <CardHeader title={'Pie Chart'} 
+      <CardHeader title={'Radar Chart'} 
        action={
         <IconButton aria-label="settings" onClick={()=>props.onRemoveItem(props.id)}>
           < Iconify icon="iconoir:cancel"/>
         </IconButton>
       } />
       <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+        {/* <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
             <Typography variant="h5" gutterBottom>
               Column
-            </Typography>
+            </Typography> */}
             
-            {options!=null && <TextField select size="small" value={selected} onChange={(e)=>handelchange(e)}  >
+            {options!=null && <TextField select label="Column" size="small" value={selected} onChange={(e)=>handelchange(e)}  >
               {options.map((option) => (
                 <MenuItem key={option} value={option}>
                   {option}
                 </MenuItem>
               ))}
           </TextField>}
-        </Stack>
+        {/* // </Stack> */}
       </Container>
 {/* 
       <ChartWrapperStyle dir="ltr">

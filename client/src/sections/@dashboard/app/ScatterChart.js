@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useState,useRef} from 'react'
 import { merge } from 'lodash';
 import ReactApexChart from 'react-apexcharts';
 // material
@@ -74,27 +74,24 @@ export default function ScatterChart(props) {
   const [options,setOptions]=useState(null)
 
   useEffect(() =>{
-    if(data==null)
-    {  
-      // console.log("sss")
-        API.get('/')
-        .then(response=>{
-          var temp=response.data.data
-          setData(temp)
-          var mapped = _.map(temp, _.partialRight(_.pick, [response.data.header[0], response.data.header[1]]));
-          var t2=[]
-          for(var [key,value] of Object.entries(mapped))
-          {
-            t2.push([value[response.data.header[0]],value[response.data.header[1]]])
-          }
-          setselectX(response.data.header[0]);
-          setselectY(response.data.header[1]);
-          setChartData(t2);
-          setOptions(response.data.header)
+      if(props.data!=null)
+      {
+        var temp=props.data.data
+        // alert("changed");
+        setData(temp)
+        var mapped = _.map(temp, _.partialRight(_.pick, [props.data.header[0], props.data.header[1]]));
+        var t2=[]
+        for(var [key,value] of Object.entries(mapped))
+        {
+          t2.push([value[props.data.header[0]],value[props.data.header[1]]])
+        }
+        setselectX(props.data.header[0]);
+        setselectY(props.data.header[1]);
+        setChartData(t2);
+        setOptions(props.data.header)
           // console.log("rr",t2)
-      })
-    }
-  },[]);
+      }
+  },[props.data]);
   
   
   const handelchangeX=(e)=>{
@@ -187,39 +184,41 @@ export default function ScatterChart(props) {
 
   return (
     <Card sx={{ height: '100%' }}>
-      <CardHeader title="University Rating" 
+      <CardHeader title="Scatter Chart" 
        action={
         <IconButton aria-label="settings" onClick={()=>props.onRemoveItem(props.id)}>
           < Iconify icon="iconoir:cancel"/>
         </IconButton>
       }/>
       <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-            <Typography variant="h5" gutterBottom>
+        {/* <Stack direction="row" alignItems="center"  mb={5}> */}
+            {/* <Typography variant="h5" gutterBottom>
               X
-            </Typography>
+            </Typography> */}
             
-            {options!=null && <TextField select size="small" value={selectx} onChange={(e)=>handelchangeX(e)}  >
+            {options!=null && <TextField select label='X Axis'  size="small" value={selectx} onChange={(e)=>handelchangeX(e)}  >
               {options.map((option) => (
                 <MenuItem key={option} value={option}>
                   {option}
                 </MenuItem>
               ))}
-          </TextField>}
-        </Stack>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+            </TextField>}
+
+            {options!=null && <TextField select size="small" sx={{marginLeft:"10px"}}label=' Y Axis' value={selecty} onChange={(e)=>handelchangeY(e)}  >
+              {options.map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>}
+        {/* </Stack> */}
+        {/* <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
             <Typography variant="h5" gutterBottom>
               Y
             </Typography>
             
-            {options!=null && <TextField select size="small" value={selecty} onChange={(e)=>handelchangeY(e)}  >
-              {options.map((option) => (
-                <MenuItem key={option} value={option}>
-                  {option}
-                </MenuItem>
-              ))}
-          </TextField>}
-        </Stack>
+           
+        </Stack> */}
       </Container>
       <Box sx={{ p: 3, pb: 1 }} dir="ltr">
         {chartData!=null && <ReactApexChart options={option} series={[{data:chartData}]} type="scatter" height={350} />}

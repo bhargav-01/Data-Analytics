@@ -31,6 +31,7 @@ import AppUploadData from '../sections/@dashboard/app/AppUploadData';
 import { Responsive as ResponsiveGridLayout } from "react-grid-layout";
 
 import { Responsive, WidthProvider } from "react-grid-layout";
+import axios from 'axios'
 // import Button from "src/theme/overrides/Button";
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -99,6 +100,7 @@ export default class DashboardApp extends React.Component {
     this.onLayoutChange = this.onLayoutChange.bind(this);
     this.onAddItem=this.onAddItem.bind(this);
     this.onRemoveItem=this.onRemoveItem.bind(this);
+    this.SelectSet=this.SelectSet.bind(this);
   }
 
   onLayoutChange = (_, allLayouts) => {
@@ -115,7 +117,8 @@ export default class DashboardApp extends React.Component {
     // console.log(this.state.items)
     // this.setState({items:[...this.state.items, itemId]})
   };
-  
+
+
   onRemoveItem = (itemId) => {
     this.setState((prevState) => {
       return { items: prevState.items.filter((i)=>i!==itemId)}
@@ -124,9 +127,39 @@ export default class DashboardApp extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true });
-    localStorage.getItem('dataURL')
+
+    const API = axios.create({
+      baseURL: 'http://localhost:3001/dataset',
+      headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`},
+    });
+
+    API.get('/')
+    .then(response=>{
+      // console.log("heelo",response.data);
+      console.log(response.data)
+      this.setState((prevState) => {
+        
+        return { data:response.data}
+      })  
+    });
   }
 
+  SelectSet=(data)=>
+  {
+    const API = axios.create({
+      baseURL: 'http://localhost:3001/dataset',
+      headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`},
+    });
+
+    API.get('/datajson', {params: {dataURL: data}})
+    .then(response=>{
+      console.log(response.data);
+      this.setState((prevState) => {
+        return { data:response.data}
+      }) 
+    });
+    
+  } 
   onLayoutSave = () => {
     saveToLS("layouts", this.state.layouts);
     localStorage.setItem("originalItems", JSON.stringify(this.state.items));
@@ -137,7 +170,7 @@ export default class DashboardApp extends React.Component {
   render(){
     return(
       <>
-        <TopBar onLayoutSave={this.onLayoutSave} onAddItem={this.onAddItem}/>
+        <TopBar onLayoutSave={this.onLayoutSave} SelectSet={this.SelectSet} onAddItem={this.onAddItem}/>
           <ResponsiveReactGridLayout
           {...this.props}
           layouts={this.state.layouts}
@@ -152,7 +185,7 @@ export default class DashboardApp extends React.Component {
           <Box
             key={key}
           >
-           <Widget component={components[componentList[key]]} id={key} onRemoveItem={this.onRemoveItem}/>
+           <Widget component={components[componentList[key]]} id={key} data={this.state.data} onRemoveItem={this.onRemoveItem}/>
           </Box>
         ))}
           {/* <Box key="1" >

@@ -21,17 +21,13 @@ export default function SelectDataSet(props) {
     },[])
   
   
-    const [dataset, setData] = React.useState('');
+  const [dataset, setData] = React.useState('');
 
   const handleChange = (event) => {
     alert("Database change")
     event.preventDefault();
     setData(event.target.value);
     console.log(event)
-    const API = axios.create({
-      baseURL: 'http://localhost:3001/dataset/datajson',
-      headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`},
-    });
     props.SelectSet(event.target.value)
     // localStorage.setItem('dataURL')
     // API.get('/', {params: {dataURL: event.target.value}})

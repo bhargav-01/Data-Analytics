@@ -15,7 +15,8 @@ const options = [
 
 export default function TopBar({
   onAddItem,
-  onLayoutSave
+  onLayoutSave,
+  SelectSet
 }) {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -36,49 +37,45 @@ export default function TopBar({
 
   return (
     <Card sx={{width: "100%",display: "flex",justifyContent: "flex-end"}}>
-      {/* <AddList
-        items={items}
-        onRemoveItem={onRemoveItem}
-        onAddItem={onAddItem}
-        originalItems={originalItems}
-      /> */}
-       <div>
-       <SelectDataSet/>
-       <Button
-          variant="contained"
-          component="span"
-          aria-controls={open ? 'long-menu' : undefined}
-          aria-expanded={open ? 'true' : undefined}
-          aria-haspopup="true"
-          onClick={handleClick}
-          startIcon={<Iconify icon="eva:plus-fill" />}>
-         Add Chart
-      </Button>
-      <Menu
-        id="long-menu"
-        MenuListProps={{
-          'aria-labelledby': 'long-button',
-        }}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        PaperProps={{
-          style: {
-            maxHeight: 48 * 4.5,
-            width: '20ch',
-          },
-        }}
-      >
-        {options.map((option) => (
-          <MenuItem key={option} value={option} onClick={handleSelect}>
-            {option}
-          </MenuItem>
-        ))}
-      </Menu>
-    </div>
-      <IconButton aria-label="save" type="submit" onClick={()=>onLayoutSave()}>
+   
+       <SelectDataSet SelectSet={SelectSet} />
+       <div style={{"margin":"auto 0 auto auto"}}>
+        <Button
+            variant="contained"
+            component="span"
+            aria-controls={open ? 'long-menu' : undefined}
+            aria-expanded={open ? 'true' : undefined}
+            aria-haspopup="true"
+            onClick={handleClick}
+            startIcon={<Iconify icon="eva:plus-fill" />}>
+          Add Chart
+        </Button>
+        <Menu
+          id="long-menu"
+          MenuListProps={{
+            'aria-labelledby': 'long-button',
+          }}
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          PaperProps={{
+            style: {
+              maxHeight: 48 * 4.5,
+              width: '20ch',
+            },
+          }}
+        >
+          {options.map((option) => (
+            <MenuItem key={option} value={option} onClick={handleSelect}>
+              {option}
+            </MenuItem>
+          ))}
+        </Menu>
+        <IconButton aria-label="save" type="submit" onClick={()=>onLayoutSave()}>
           <Iconify icon={'entypo:save'}/>
-      </IconButton>
+        </IconButton>
+    </div>
+      
     </Card>
   );
 }
