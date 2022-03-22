@@ -48,11 +48,36 @@ router.get('/',authenticate.verifyUser, function(req, res, next) {
     })
 });
 
+
+router.get('/datajson',authenticate.verifyUser, function(req, res, next) {
+          // console.log(req)
+          axios.get(req.query.dataURL)
+          .then(body=>{
+
+            var result=Papa.parse(body.data,{
+              header:true,
+              dynamicTyping:true,
+            });
+            // console.log(result)
+            var header=result.meta.fields;
+            header.shift();
+            header.unshift('id');
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            result.data.pop();
+            res.json({data:result.data,header:header});
+          })
+          .catch(e=>console.log(e))
+          console.log(req.query.dataURL)
+
+    
+    });
+
 router.get('/datadisplay',authenticate.verifyUser, function(req, res, next) {
   DataSet.find({author:req.user._id})
     .populate('author')
     .then(data=>{
-      
+
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json(data);
