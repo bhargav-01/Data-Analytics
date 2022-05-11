@@ -121,31 +121,31 @@ export default function ScatterChart(props) {
     setChartData(t2);
   }
 
-  const chartOptions = merge(BaseOptionChart(), {
-    stroke: { width: 0 },
-    plotOptions: { bar: { columnWidth: '11%', borderRadius: 4 } },
-    fill: { type: ['solid', 'gradient', 'solid'] },
-    labels: [
-      '01/01/2003',
-      '02/01/2003',
-      '03/01/2003',
-      '04/01/2003',
-      '05/01/2003',
-    ],
-    xaxis: { type: 'datetime' },
-    tooltip: {
-      shared: true,
-      intersect: false,
-      y: {
-        formatter: (y) => {
-          if (typeof y !== 'undefined') {
-            return `${y.toFixed(0)} visits`;
-          }
-          return y;
-        }
-      }
-    }
-  });
+  // const chartOptions = merge(BaseOptionChart(), {
+  //   stroke: { width: 0 },
+  //   plotOptions: { bar: { columnWidth: '11%', borderRadius: 4 } },
+  //   fill: { type: ['solid', 'gradient', 'solid'] },
+  //   labels: [
+  //     '01/01/2003',
+  //     '02/01/2003',
+  //     '03/01/2003',
+  //     '04/01/2003',
+  //     '05/01/2003',
+  //   ],
+  //   xaxis: { type: 'datetime' },
+  //   tooltip: {
+  //     shared: true,
+  //     intersect: false,
+  //     y: {
+  //       formatter: (y) => {
+  //         if (typeof y !== 'undefined') {
+  //           return `${y.toFixed(0)} visits`;
+  //         }
+  //         return y;
+  //       }
+  //     }
+  //   }
+  // });
   const option={
     plotOptions: { bar: { columnWidth: '11%', borderRadius: 4 } },
 

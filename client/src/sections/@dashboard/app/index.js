@@ -18,3 +18,4 @@ export { default as BarChart } from './BarChart';
 export { default as RadarChart } from './RadarChart';
 export { default as TopBar } from './TopBar';
 export { default as Widget } from './Widget';
+export { default as LinearRegression } from './LinearRegression';

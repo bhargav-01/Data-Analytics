@@ -11,6 +11,7 @@ const options = [
   "AppHeatMap",
   "AppExcel",
   "PieChart",
+  "LinerRegression"
 ];
 
 export default function TopBar({

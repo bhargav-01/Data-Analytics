@@ -23,6 +23,7 @@ import {
   AppCurrentSubject,
   AppConversionRates,
   ScatterChart,
+  LinearRegression,
   LineChart,
   RadarChart,
   TopBar,
@@ -80,7 +81,8 @@ const components = {
   "AppHeatMap": AppHeatMap,
   "AppExcel": AppExcel,
   "AppExcel": AppExcel,
-  "PieChart": PieChart
+  "PieChart": PieChart,
+  "LinerRegression":LinearRegression
 };
 export default class DashboardApp extends React.Component {
 
