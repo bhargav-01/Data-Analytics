@@ -24,6 +24,11 @@ import {
   AppConversionRates,
   ScatterChart,
   LinearRegression,
+  GetMean,
+  GetVar,
+  GetMin,
+  GetMax,
+  GetSum,
   LineChart,
   RadarChart,
   TopBar,
@@ -61,7 +66,7 @@ function getFromLS(key) {
   return ls[key];
 }
 
-const originalItems =["1", "2", "3", "4","5","6","7"];
+const originalItems =["1", "2", "3", "4","5","6","7","8"];
 
 const componentList = JSON.parse(localStorage.getItem('componentList')) ||{
   1: "LineChart",
@@ -71,6 +76,11 @@ const componentList = JSON.parse(localStorage.getItem('componentList')) ||{
   5: "AppHeatMap",
   6: "AppExcel",
   7:"PieChart",
+  8: "Mean",
+  9: "Variance",
+  10: "Minimum",
+  11: "Maximum",
+  12: "Sum"
 };
 
 const components = {
@@ -82,7 +92,12 @@ const components = {
   "AppExcel": AppExcel,
   "AppExcel": AppExcel,
   "PieChart": PieChart,
-  "LinerRegression":LinearRegression
+  "LinerRegression":LinearRegression,
+  "Mean": GetMean,
+  "Variance": GetVar,
+  "Minimum": GetMin,
+  "Maximum": GetMax,
+  "Sum": GetSum
 };
 export default class DashboardApp extends React.Component {
 
@@ -190,6 +205,7 @@ export default class DashboardApp extends React.Component {
            <Widget component={components[componentList[key]]} id={key} data={this.state.data} onRemoveItem={this.onRemoveItem}/>
           </Box>
         ))}
+        
           {/* <Box key="1" >
           </Box>
           <Box key="2">
