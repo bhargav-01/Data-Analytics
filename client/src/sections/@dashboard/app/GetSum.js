@@ -65,16 +65,20 @@ export default function AppWeeklySales(props) {
       {
         var temp=props.data.data;
         setData(props.data.data)
-        var ss=_.groupBy(temp,props.data.header[1])
-        var a=_.transform(ss, function(result, value, key) {
-          result[key]=value.length
-          return result
-        })
-        setLabel(Object.keys(a))
+        var temp=props.data.data;
+        var ss=_.map(temp,props.data.header[1])
+        setSumData(_.sum(ss));
+        // var ss=_.groupBy(temp,props.data.header[1])
+        // var a=_.transform(ss, function(result, value, key) {
+        //   result[key]=value.length
+        //   return result
+        // })
+        setLabel(props.data.header[1])
         // console.log(response.data.header)
         setOptions(props.data.header)
         setSelected(props.data.header[1]);
-        setSumData(a)
+        // setSumData(a)
+        setFn(props.data.header[1])
       }
     },[props.data]);
 
@@ -89,30 +93,36 @@ export default function AppWeeklySales(props) {
       setFn(e.target.value)
     }
   return (
-    <Card sx={{ height: '100%',margin:"0px",padding:"0px",backgroundColor:"#ff006f"}}>
-        <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-            <Typography variant="h5" gutterBottom>
-              Sum
-            </Typography>
-            
-            {options!=null && <TextField select size="small" value={selected} onChange={(e)=>handelchange(e)}  >
-              {options.map((option) => (
-                <MenuItem key={option} value={option}>
-                  {option}
-                </MenuItem>
-              ))}
-          </TextField>}
-        </Stack>
-      </Container>
-        <RootStyle sx={{ height: '100%',margin:"0px",padding:"0px",backgroundColor:"#ff006f"}}>
-            <div style={{display:"flex",justifyContent:"flex-end"}}>
+    <Card sx={{ height: '100%',margin:"0px",padding:"0px",backgroundColor:"#ffe7d9",color:"#7a0c2e",borderRadius:"25px"}}>
+        <CardHeader title={
+            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+              <Typography variant="h5">Sum</Typography>
+              {options!=null && <TextField select size="small" value={selected} onChange={(e)=>handelchange(e)}  >
+                {options.map((option) => (
+                  <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+              </TextField>}
+            </Stack>
+          } 
+          action={
+            <IconButton aria-label="settings" onClick={()=>props.onRemoveItem(props.id)}>
+              < Iconify icon="iconoir:cancel"/>
+            </IconButton>
+          }
+        />
+        {/* <Container>
+        
+       </Container> */}
+        <RootStyle sx={{ height: '100%',margin:"0px",padding:"0px",backgroundColor:"#ffe7d9",color:"#7a0c2e"}}>
+            {/* <div style={{display:"flex",justifyContent:"flex-end"}}>
             <IconButton aria-label="settings" onClick={() => props.onRemoveItem(props.id)}>
                       < Iconify icon="iconoir:cancel" />
               </IconButton>
-            </div>
+            </div> */}
             <IconWrapperStyle>
-                <Iconify icon="tabler:sum" width={24} height={24} />
+                <Iconify icon="tabler:sum" sx={{color:"#7a0c2e"}}width={24} height={24} />
             </IconWrapperStyle>
             <Typography variant="h3">{fShortenNumber(SumData)}</Typography>
             <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>

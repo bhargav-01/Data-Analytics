@@ -1,4 +1,6 @@
 // material
+import { Link as RouterLink } from 'react-router-dom';
+
 import React from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
@@ -35,13 +37,28 @@ import {
 } from '../sections/@dashboard/app';
 import AppUploadData from '../sections/@dashboard/app/AppUploadData';
 import { Responsive as ResponsiveGridLayout } from "react-grid-layout";
+import { UploadData } from '../sections/@dashboard/datasets';
+import { motion } from 'framer-motion';
+import { MotionContainer, varBounceIn } from '../components/animate';
+import { styled } from '@mui/material/styles';
 
 import { Responsive, WidthProvider } from "react-grid-layout";
 import axios from 'axios'
+import Iconify from '../components/Iconify';
 // import Button from "src/theme/overrides/Button";
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
+// import { , Typography, Container } from '@mui/material';
+// components
+// import Page from '../components/Page';
 // ----------------------------------------------------------------------
+const RootStyle = styled(Page)(({ theme }) => ({
+  display: 'flex',
+  minHeight: '100%',
+  alignItems: 'center',
+  paddingTop: theme.spacing(15),
+  paddingBottom: theme.spacing(10)
+}));
 
 
 function saveToLS(key, value) {
@@ -104,7 +121,7 @@ export default class DashboardApp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data:null,
+      isDataExit:true,
       count:parseInt(localStorage.getItem('count')) ||10,
       items:JSON.parse(localStorage.getItem('originalItems'))|| originalItems,
       currentBreakpoint: "lg",
@@ -150,14 +167,26 @@ export default class DashboardApp extends React.Component {
       headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`},
     });
 
-    API.get('/')
+    API.get('')
     .then(response=>{
+      console.log(response)
+      if(response.data.message=="no dataset")
+      {
+        alert(response.data.message)
+        this.setState({
+            isDataExit:false,
+        })
+        // console.log(response.data)
+       
+      }
+      else
+      {
+        this.setState((prevState) => {
+          return { data:response.data}
+        })  
+      }
       // console.log("heelo",response.data);
-      console.log(response.data)
-      this.setState((prevState) => {
-        
-        return { data:response.data}
-      })  
+      
     });
   }
 
@@ -187,6 +216,41 @@ export default class DashboardApp extends React.Component {
   render(){
     return(
       <>
+      {
+        this.state.isDataExit==false &&
+          // <RootStyle title="404 Page Not Found | Minimal-UI">
+            <Container>
+              <MotionContainer initial="initial" open>
+                <Box sx={{ maxWidth: 480, margin: '0px auto', textAlign: 'center' }}>
+                  <motion.div variants={varBounceIn}>
+                    <Typography variant="h3" paragraph>
+                      Upload Data!
+                    </Typography>
+                  </motion.div>
+                  <Typography sx={{ color: 'text.secondary' }}>
+                    Sorry, we couldn’t find the any Dataset. So please upload dataser.
+                  </Typography>
+
+                  <motion.div variants={varBounceIn}>
+                    <Box
+                      component="img"
+                      src="/static/illustrations/illustration_upload.svg"
+                      sx={{ height: 260, mx: 'auto', my: { xs: 5, sm: 10 } }}
+                    />
+                  </motion.div>
+                  <Button to="/dashboard/datasets" size="large" variant="contained" component={RouterLink}
+                    startIcon={<Iconify icon='entypo:upload-to-cloud'/>}
+                    >
+                    Upload Data
+                  </Button>
+                </Box>
+              </MotionContainer>
+            </Container>
+          // </RootStyle>
+      }
+      {
+        this.state.data!=null && 
+        <>
         <TopBar onLayoutSave={this.onLayoutSave} SelectSet={this.SelectSet} onAddItem={this.onAddItem}/>
           <ResponsiveReactGridLayout
           {...this.props}
@@ -266,6 +330,8 @@ export default class DashboardApp extends React.Component {
             <AppConversionRates />
           </Box> */}
         </ResponsiveReactGridLayout>
+        </>
+      }
       </>
         
     )

@@ -41,7 +41,7 @@ DashboardSidebar.propTypes = {
   onCloseSidebar: PropTypes.func
 };
 
-export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
+export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar,profile}) {
   const { pathname } = useLocation();
 
   const isDesktop = useResponsive('up', 'lg');
@@ -67,10 +67,10 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
       <Box sx={{ mb: 5, mx: 2.5 }}>
         <Link underline="none" component={RouterLink} to="#">
           <AccountStyle>
-            <Avatar src={account.photoURL} alt="photoURL" />
+            <Avatar src={profile==null?account.photoURL:profile.profile_image} alt="photoURL" />
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {account.displayName}
+                {profile==null?account.displayName:profile.firstname}
               </Typography>
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                 {account.role}
@@ -80,11 +80,11 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         </Link>
       </Box>
 
-      <NavSection navConfig={sidebarConfig} />
+      <NavSection navConfig={sidebarConfig}/>
 
       <Box sx={{ flexGrow: 1 }} />
 
-      <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
+      {/* <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
         <Stack
           alignItems="center"
           spacing={3}
@@ -113,7 +113,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             Upgrade to Pro
           </Button>
         </Stack>
-      </Box>
+      </Box> */}
     </Scrollbar>
   );
 

@@ -65,16 +65,27 @@ export default function AppWeeklySales(props) {
       {
         var temp=props.data.data;
         setData(props.data.data)
-        var ss=_.groupBy(temp,props.data.header[1])
-        var a=_.transform(ss, function(result, value, key) {
-          result[key]=value.length
-          return result
-        })
-        setLabel(Object.keys(a))
+        var ss=_.map(temp,props.data.header[1])
+        var m=_.sum(ss)/_.size(ss)
+        const sub = ss.map(number => {
+          return number - m;
+        });
+        const sq = sub.map(number => {
+          return number * number;
+        });
+        
+        setVarData(_.sum(sq)/_.size(sq));
+        // var ss=_.groupBy(temp,props.data.header[1])
+        // var a=_.transform(ss, function(result, value, key) {
+        //   result[key]=value.length
+        //   return result
+        // })
+        setLabel(props.data.header[1])
         // console.log(response.data.header)
         setOptions(props.data.header)
         setSelected(props.data.header[1]);
-        setVarData(a)
+        setFn(props.data.header[1])
+        // setVarData(a)
       }
     },[props.data]);
 
@@ -104,8 +115,26 @@ export default function AppWeeklySales(props) {
       setFn(e.target.value)
     }
   return (
-    <Card sx={{ height: '100%',margin:"0px",padding:"0px",backgroundColor:"#00ccff"}}>
-        <Container>
+    <Card sx={{ height: '100%',margin:"0px",padding:"0px",backgroundColor:"#c8facd",color:"#005249",borderRadius:"25px"}}>
+        <CardHeader title={
+            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+              <Typography variant="h5">Variance</Typography>
+              {options!=null && <TextField select size="small" value={selected} onChange={(e)=>handelchange(e)}  >
+                {options.map((option) => (
+                  <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+              </TextField>}
+            </Stack>
+          } 
+          action={
+            <IconButton aria-label="settings" onClick={()=>props.onRemoveItem(props.id)}>
+              < Iconify icon="iconoir:cancel"/>
+            </IconButton>
+          }
+        />
+        {/* <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
             <Typography variant="h5" gutterBottom>
               Variance
@@ -119,13 +148,13 @@ export default function AppWeeklySales(props) {
               ))}
           </TextField>}
         </Stack>
-      </Container>
-        <RootStyle sx={{ height: '100%',margin:"0px",padding:"0px",backgroundColor:"#00ccff"}}>
-            <div style={{display:"flex",justifyContent:"flex-end"}}>
+      </Container> */}
+        <RootStyle sx={{ height: '100%',margin:"0px",padding:"0px",backgroundColor:"#c8facd",color:"#005249"}}>
+            {/* <div style={{display:"flex",justifyContent:"flex-end"}}>
             <IconButton aria-label="settings" onClick={() => props.onRemoveItem(props.id)}>
                       < Iconify icon="iconoir:cancel" />
               </IconButton>
-            </div>
+            </div> */}
             <IconWrapperStyle>
                 <Iconify icon="icon-park-outline:difference-set" width={24} height={24} />
             </IconWrapperStyle>

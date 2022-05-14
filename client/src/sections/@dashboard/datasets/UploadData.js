@@ -44,16 +44,16 @@ export default function UploadData(props) {
 
     const UploadData1=(event)=>{
         event.preventDefault();
-        console.log(event.name)
+        // console.log(event.name)
         const now= new Date();
         const storageRef = ref(storage,`${now.getFullYear()}${now.getMonth()}${now.getDate()}${now.getTime()}.csv`);
-        console.log(event.target.files);
+        // console.log(event.target.files);
         uploadBytes(storageRef,event.target.files[0])
         .then((snapshot) => {
             getDownloadURL(storageRef)
             .then((url) => {
-                console.log(url);
-                alert(url);
+                // console.log(url);
+                // alert(url);
                 setCSV(url);
                 axios.post('http://localhost:3001/dataset',{DataSetName:event.target.files[0].name,DataSetURL:url},{
                     headers: {
@@ -82,14 +82,15 @@ export default function UploadData(props) {
     
     <Card>
       <CardHeader/>
-      <CardContent>
+      <CardContent >
         <Grid container spacing={2}>
-        <label htmlFor="contained-button-file">
+        <label htmlFor="contained-button-file" >
                 <Input accept=".csv" id="contained-button-file" multiple type="file" onChange={UploadData1}/>
                 <Button
                     variant="contained"
                     component="span"
                     // to="#"
+                    size="large"
                     startIcon={<Iconify icon="eva:plus-fill" />}
                     
                 >

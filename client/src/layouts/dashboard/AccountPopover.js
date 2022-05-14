@@ -31,7 +31,7 @@ const MENU_OPTIONS = [
 
 // ----------------------------------------------------------------------
 
-export default function AccountPopover() {
+export default function AccountPopover({profile}) {
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
 
@@ -64,7 +64,7 @@ export default function AccountPopover() {
           })
         }}
       >
-        <Avatar src={account.photoURL} alt="photoURL" />
+        <Avatar src={profile==null?account.photoURL:profile.profile_image} alt="photoURL" />
       </IconButton>
 
       <MenuPopover
@@ -75,10 +75,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle1" noWrap>
-            {account.displayName}
+            {profile==null?account.displayName:profile.firstname}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+            {profile==null?account.email:profile.email}
           </Typography>
         </Box>
 

@@ -16,7 +16,13 @@ var User = new Schema({
     type: String,
     default: "",
   },
-    
+  verification:{
+    type:String,
+    default:"pending",
+  },
+  otp:{
+    type:String,
+  }
 
 });
 

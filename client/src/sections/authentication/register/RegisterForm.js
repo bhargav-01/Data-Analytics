@@ -43,9 +43,9 @@ export default function RegisterForm() {
           password: formik.values.password,
         })
         .then(response=>{
-          alert("ss")
+          // alert("ss")
             localStorage.setItem('token',response.data.token);
-            navigate('/dashboard/app', { replace: true });
+            navigate('/verifiation', { replace: true });
         })
         .catch(error => {
             alert(error);

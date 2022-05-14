@@ -20,12 +20,11 @@ router.get('/',authenticate.verifyUser, function(req, res, next) {
   DataSet.find({author:req.user._id})
     .populate('author')
     .then(data=>{
-      console.log(data.length)
       if(data.length==0)
       {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.json({});
+        res.json({message:"no dataset"});
       }
       else
       {
@@ -42,7 +41,7 @@ router.get('/',authenticate.verifyUser, function(req, res, next) {
             header.unshift('id');
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
-            res.json({data:result.data,header:header});
+            res.json({data:result.data,header:header,message:"dataset"});
           }) 
       }
     })

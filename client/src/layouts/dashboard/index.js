@@ -39,22 +39,42 @@ export default function DashboardLayout() {
       SetData1(data)
       console.log(data1)
   }
+
+  const [profile,setProfile]=useState(null);
+  const [isLoding,setLoding]=useState(true);
+  
   const API = axios.create({
-    baseURL: 'http://localhost:3001/dataset/',
+    baseURL: 'http://localhost:3001/',
     headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`},
  });
   useEffect(()=>{
-    API.get('/')  
-    .then(response=>{console.log(response.data);setData(response.data)})
+    setLoding(false)
+    API.get('/dataset')  
+    .then(response=>{setData(response.data)})
+
+    API.get('/users')  
+    .then(response=>{setProfile(response.data)})
     
+    setLoding(true)
   },[])
   return (
     <RootStyle>
-      <DashboardNavbar onOpenSidebar={() => setOpen(true)} />
-      <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
-      <MainStyle>
-        <Outlet />
-      </MainStyle>
+      {isLoding==false && 
+        <div>
+          <h1>Hi hello</h1>
+        </div>
+      }
+      {
+        isLoding==true &&
+        <>
+         <DashboardNavbar onOpenSidebar={() => setOpen(true)} profile={profile} />
+         <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} profile={profile}/>
+         <MainStyle>
+           <Outlet />
+         </MainStyle>
+         </>
+      }
+     
     </RootStyle>
   );
 }

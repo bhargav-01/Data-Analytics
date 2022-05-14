@@ -37,13 +37,13 @@ export default function LoginForm() {
     },
     // validationSchema: LoginSchema,
     onSubmit: () => {
-      alert("Submit")
+      // alert("Submit")
       axios.post('http://localhost:3001/users/login',{
         email: formik.values.email,
         password: formik.values.password,
       })
       .then(response=>{
-          console.log(response.data.token)
+          // console.log(response.data.token)
           localStorage.setItem('token',response.data.token);
           navigate('/dashboard/app', { replace: true });
       })
